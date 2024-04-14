@@ -2,10 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Data;
 using DemoApp.DataAccess;
 using DemoApp.Model;
 using DemoApp.Properties;
@@ -18,10 +15,11 @@ namespace DemoApp.ViewModel
     public class MainWindowViewModel : WorkspaceViewModel
     {
         #region Fields
-                
+
         ReadOnlyCollection<CommandViewModel> _commands;
         readonly CustomerRepository _customerRepository;
         ObservableCollection<WorkspaceViewModel> _workspaces;
+        WorkspaceViewModel _currentWorkspace;
 
         #endregion // Fields
 
@@ -39,7 +37,7 @@ namespace DemoApp.ViewModel
         #region Commands
 
         /// <summary>
-        /// Returns a read-only list of commands 
+        /// Returns a read-only list of commands
         /// that the UI can display and execute.
         /// </summary>
         public ReadOnlyCollection<CommandViewModel> Commands
@@ -108,6 +106,17 @@ namespace DemoApp.ViewModel
             this.Workspaces.Remove(workspace);
         }
 
+        public WorkspaceViewModel CurrentWorkspace
+        {
+            get => _currentWorkspace;
+            set
+            {
+                if (_currentWorkspace == value) return;
+                _currentWorkspace = value;
+                OnPropertyChanged(nameof(CurrentWorkspace));
+            }
+        }
+
         #endregion // Workspaces
 
         #region Private Helpers
@@ -117,7 +126,7 @@ namespace DemoApp.ViewModel
             Customer newCustomer = Customer.CreateNewCustomer();
             CustomerViewModel workspace = new CustomerViewModel(newCustomer, _customerRepository);
             this.Workspaces.Add(workspace);
-            this.SetActiveWorkspace(workspace);
+            CurrentWorkspace = workspace;
         }
 
         void ShowAllCustomers()
@@ -132,16 +141,7 @@ namespace DemoApp.ViewModel
                 this.Workspaces.Add(workspace);
             }
 
-            this.SetActiveWorkspace(workspace);
-        }
-
-        void SetActiveWorkspace(WorkspaceViewModel workspace)
-        {
-            Debug.Assert(this.Workspaces.Contains(workspace));
-
-            ICollectionView collectionView = CollectionViewSource.GetDefaultView(this.Workspaces);
-            if (collectionView != null)
-                collectionView.MoveCurrentTo(workspace);
+            CurrentWorkspace = workspace;
         }
 
         #endregion // Private Helpers

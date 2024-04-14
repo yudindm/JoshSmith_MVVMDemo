@@ -1,9 +1,9 @@
-﻿<Window 
+﻿<Window
   x:Class="DemoApp.MainWindow"
   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
   xmlns:vm="clr-namespace:DemoApp.ViewModel"
-  FontSize="13" 
+  FontSize="13"
   FontFamily="Verdana"
   MinWidth="650" MinHeight="420"
   Title="{Binding Path=DisplayName}"
@@ -33,8 +33,8 @@
         <ColumnDefinition Width="*" />
       </Grid.ColumnDefinitions>
 
-      <Border 
-        Grid.Column="0" 
+      <Border
+        Grid.Column="0"
         Style="{StaticResource MainBorderStyle}"
         Width="170"
         >
@@ -47,11 +47,11 @@
       </Border>
 
       <Border
-        Grid.Column="2" 
+        Grid.Column="2"
         Style="{StaticResource MainBorderStyle}"
         >
-        <HeaderedContentControl 
-          Content="{Binding Path=Workspaces}"
+        <HeaderedContentControl
+          Content="{Binding}"
           ContentTemplate="{StaticResource WorkspacesTemplate}"
           Header="Workspaces"
           Style="{StaticResource MainHCCStyle}"
